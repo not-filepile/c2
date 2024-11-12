@@ -21,7 +21,7 @@ var (
 )
 var upgrader = websocket.Upgrader{}
 var clients = make(map[*websocket.Conn]bool)
-var mu sync.Mutex // 동기화를 위한 뮤텍스
+var mu sync.Mutex
 
 func printClientCount() {
 	clientCount := len(clients)
@@ -46,11 +46,10 @@ func readClientMessages(ws *websocket.Conn) {
 			break
 		}
 
-		// 뮤텍스 잠금으로 출력 동기화
 		mu.Lock()
-		fmt.Print("\r")                       // 기존 입력 지우기
-		valueColor.Printf("%s\n", msg)        // 클라이언트 메시지 출력
-		keyColor.Printf("admin@filepile:~$ ") // 프롬프트 다시 출력
+		fmt.Print("\r")
+		valueColor.Printf("%s\n", msg)
+		keyColor.Printf("admin@cnc:~$ ")
 		mu.Unlock()
 	}
 }
